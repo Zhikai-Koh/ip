@@ -10,6 +10,9 @@ public class Bob {
      * @param args command-line arguments, which are not used
      */
     public static void main(String[] args) {
+        String[] database = new String[100];
+        int currCount = 0;
+
         String separator = "____________________________________________________________";
         String banner = " ____        _     \n"
                 + "| __ )  ___ | |__  \n"
@@ -31,9 +34,15 @@ public class Bob {
                 System.out.print(goodbyes);
                 System.out.println(separator);
                 break;
+            } else if (command.equals("list")) {
+                for(int i = 1; i < currCount + 1; i++){
+                    System.out.println(i + ". " + database[i - 1]);
+                }
+            } else{
+                database[currCount] = command;
+                currCount += 1;
+                System.out.println("added: " + command);
             }
-
-            System.out.println(command);
             System.out.println(separator);
         }
     }
