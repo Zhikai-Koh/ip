@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -11,8 +12,7 @@ public class Bob {
      * @param args command-line arguments, which are not used
      */
     public static void main(String[] args) {
-        Task[] database = new Task[100];
-        int currCount = 0;
+        ArrayList<Task> tasks = new ArrayList<>();
 
         String separator = "____________________________________________________________";
         String banner = " ____        _     \n"
@@ -37,33 +37,40 @@ public class Bob {
                     break;
                 } else if (command.equals("list")) {
                     System.out.println("Here are the tasks in your list:");
-                    for (int i = 0; i < currCount; i++) {
-                        System.out.println((i + 1) + "." + database[i]);
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println((i + 1) + "." + tasks.get(i));
                     }
                 } else if (isCommand(command, "mark")) {
-                    int itemID = parseTaskNumber(command, "mark", currCount);
-                    String marked = database[itemID - 1].mark();
+                    int itemID = parseTaskNumber(command, "mark", tasks.size());
+                    String marked = tasks.get(itemID - 1).mark();
 
                     System.out.println("Nice! I've marked this task as done:");
                     System.out.println("  " + marked);
                 } else if (isCommand(command, "unmark")) {
-                    int itemID = parseTaskNumber(command, "unmark", currCount);
-                    String marked = database[itemID - 1].unmark();
+                    int itemID = parseTaskNumber(command, "unmark", tasks.size());
+                    String marked = tasks.get(itemID - 1).unmark();
 
                     System.out.println("OK, I've marked this task as not done yet:");
                     System.out.println("  " + marked);
+                } else if (isCommand(command, "delete")) {
+                    int itemID = parseTaskNumber(command, "delete", tasks.size());
+                    Task removedTask = tasks.remove(itemID - 1);
+
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println("  " + removedTask);
+                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                 } else if (isCommand(command, "todo")) {
                     Task task = parseTodo(command);
-                    currCount = addTask(database, currCount, task);
+                    addTask(tasks, task);
                 } else if (isCommand(command, "deadline")) {
                     Task task = parseDeadline(command);
-                    currCount = addTask(database, currCount, task);
+                    addTask(tasks, task);
                 } else if (isCommand(command, "event")) {
                     Task task = parseEvent(command);
-                    currCount = addTask(database, currCount, task);
+                    addTask(tasks, task);
                 } else {
                     throw new BobException("I couldn't match that to a command. "
-                            + "Try todo, deadline, event, list, mark, unmark, or bye.");
+                            + "Try todo, deadline, event, list, mark, unmark, delete, or bye.");
                 }
             } catch (BobException e) {
                 System.out.println(e.getMessage());
@@ -84,7 +91,7 @@ public class Bob {
     }
 
     /**
-     * Extracts and validates the task number supplied to mark or unmark.
+     * Extracts and validates the task number supplied to mark, unmark, or delete.
      *
      * @param input full user input
      * @param command command whose argument is being parsed
@@ -192,22 +199,14 @@ public class Bob {
     }
 
     /**
-     * Stores a task, displays confirmation, and returns the updated task count.
+     * Stores a task and displays confirmation.
      *
-     * @param database array in which tasks are stored
-     * @param taskCount number of tasks currently stored
+     * @param tasks list in which tasks are stored
      * @param task task to add
-     * @return the updated task count
-     * @throws BobException if the task array is full
      */
-    private static int addTask(Task[] database, int taskCount, Task task) throws BobException {
-        if (taskCount >= database.length) {
-            throw new BobException("Your task list is full. Complete or remove a task before adding another.");
-        }
-        database[taskCount] = task;
-        int updatedTaskCount = taskCount + 1;
-        printTaskAdded(task, updatedTaskCount);
-        return updatedTaskCount;
+    private static void addTask(ArrayList<Task> tasks, Task task) {
+        tasks.add(task);
+        printTaskAdded(task, tasks.size());
     }
 
     /**
