@@ -3,16 +3,19 @@
  */
 public class Task {
     private final String description;
-    private boolean isDone;
+    private final TaskType type;
+    private TaskStatus status;
 
     /**
      * Creates a new task that is initially not completed.
      *
      * @param description description of the task
+     * @param type category of the task
      */
-    public Task(String description) {
+    public Task(String description, TaskType type) {
         this.description = description;
-        this.isDone = false;
+        this.type = type;
+        this.status = TaskStatus.NOT_DONE;
     }
 
     /**
@@ -21,7 +24,7 @@ public class Task {
      * @return {@code "[X]"} if the task is completed, or {@code "[ ]"} otherwise
      */
     public String getStatusIcon() {
-        return (isDone ? "[X]" : "[ ]"); // mark done task with X
+        return status.getIcon();
     }
 
     /**
@@ -30,7 +33,7 @@ public class Task {
      * @return the task's status icon and description
      */
     public String mark() {
-        this.isDone = true;
+        this.status = TaskStatus.DONE;
 
         return toString();
     }
@@ -41,7 +44,7 @@ public class Task {
      * @return the task's status icon and description
      */
     public String unmark() {
-        this.isDone = false;
+        this.status = TaskStatus.NOT_DONE;
 
         return toString();
     }
@@ -58,10 +61,10 @@ public class Task {
     /**
      * Returns the task in the format used when displaying it to the user.
      *
-     * @return the task's status icon and description
+     * @return the task's type icon, status icon, and description
      */
     @Override
     public String toString() {
-        return getStatusIcon() + " " + description;
+        return type.getIcon() + getStatusIcon() + " " + description;
     }
 }
