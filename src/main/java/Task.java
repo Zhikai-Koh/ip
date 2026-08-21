@@ -2,8 +2,8 @@
  * Represents a task with a description and completion status.
  */
 public class Task {
-    protected String description;
-    protected boolean isDone;
+    private final String description;
+    private boolean isDone;
 
     /**
      * Creates a new task that is initially not completed.
@@ -32,7 +32,7 @@ public class Task {
     public String mark() {
         this.isDone = true;
 
-        return getStatusIcon() + " " + this.description;
+        return toString();
     }
 
     /**
@@ -40,10 +40,10 @@ public class Task {
      *
      * @return the task's status icon and description
      */
-    public  String unmark(){
+    public String unmark() {
         this.isDone = false;
 
-        return getStatusIcon() + " " + this.description;
+        return toString();
     }
 
     /**
@@ -51,7 +51,17 @@ public class Task {
      *
      * @return the task description
      */
-    public String getDescription(){
+    public String getDescription() {
         return this.description;
+    }
+
+    /**
+     * Returns the task in the format used when displaying it to the user.
+     *
+     * @return the task's status icon and description
+     */
+    @Override
+    public String toString() {
+        return getStatusIcon() + " " + description;
     }
 }
