@@ -1,18 +1,23 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents a task that takes place between two date or time descriptions.
  */
 public class Event extends Task {
-    private final String from;
-    private final String to;
+    private static final DateTimeFormatter DISPLAY_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy");
+
+    private final LocalDate from;
+    private final LocalDate to;
 
     /**
      * Creates a new event task.
      *
      * @param description description of the event
-     * @param from start entered by the user
-     * @param to end entered by the user
+     * @param from date when the event starts
+     * @param to date when the event ends
      */
-    public Event(String description, String from, String to) {
+    public Event(String description, LocalDate from, LocalDate to) {
         super(description, TaskType.EVENT);
         this.from = from;
         this.to = to;
@@ -25,7 +30,8 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return super.toString() + " (from: " + from + " to: " + to + ")";
+        return super.toString() + " (from: " + from.format(DISPLAY_FORMAT)
+                + " to: " + to.format(DISPLAY_FORMAT) + ")";
     }
 
     /**

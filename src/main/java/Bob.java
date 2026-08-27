@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -166,14 +168,14 @@ public class Bob {
         }
 
         String description = details.substring(0, byPosition).trim();
-        String by = details.substring(byPosition + "/by".length()).trim();
+        String byText = details.substring(byPosition + "/by".length()).trim();
         if (description.isEmpty()) {
             throw new BobException("Tell me what the deadline is for before adding /by.");
         }
-        if (by.isEmpty()) {
+        if (byText.isEmpty()) {
             throw new BobException("The /by field cannot be empty. Tell me when this task is due.");
         }
-        return new Deadline(description, by);
+        return new Deadline(description, parseDate(byText));
     }
 
     /**
@@ -200,15 +202,31 @@ public class Bob {
             throw new BobException("This event needs an ending time. Add one using /to.");
         }
 
-        String from = schedule.substring(0, toPosition).trim();
-        String to = schedule.substring(toPosition + "/to".length()).trim();
-        if (from.isEmpty()) {
+        String fromText = schedule.substring(0, toPosition).trim();
+        String toText = schedule.substring(toPosition + "/to".length()).trim();
+        if (fromText.isEmpty()) {
             throw new BobException("The /from field cannot be empty. Tell me when the event starts.");
         }
-        if (to.isEmpty()) {
+        if (toText.isEmpty()) {
             throw new BobException("The /to field cannot be empty. Tell me when the event ends.");
         }
-        return new Event(description, from, to);
+        return new Event(description, parseDate(fromText), parseDate(toText));
+    }
+
+    /**
+     * Parses a date in the {@code yyyy-MM-dd} format used by task commands.
+     *
+     * @param dateText date entered by the user
+     * @return parsed date
+     * @throws BobException if the text is not a valid date in the required format
+     */
+    private static LocalDate parseDate(String dateText) throws BobException {
+        try {
+            return LocalDate.parse(dateText);
+        } catch (DateTimeParseException e) {
+            throw new BobException("I couldn't understand that date. Use yyyy-MM-dd, "
+                    + "for example: 2019-12-02.");
+        }
     }
 
     /**

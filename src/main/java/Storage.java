@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,21 +58,25 @@ public class Storage {
         }
 
         Task task;
-        switch (fields[0]) {
-        case "T":
-            requireFieldCount(fields, 3, taskLine);
-            task = new Todo(fields[2]);
-            break;
-        case "D":
-            requireFieldCount(fields, 4, taskLine);
-            task = new Deadline(fields[2], fields[3]);
-            break;
-        case "E":
-            requireFieldCount(fields, 5, taskLine);
-            task = new Event(fields[2], fields[3], fields[4]);
-            break;
-        default:
-            throw new BobException("I found an unknown task type in the task file: " + fields[0]);
+        try {
+            switch (fields[0]) {
+            case "T":
+                requireFieldCount(fields, 3, taskLine);
+                task = new Todo(fields[2]);
+                break;
+            case "D":
+                requireFieldCount(fields, 4, taskLine);
+                task = new Deadline(fields[2], LocalDate.parse(fields[3]));
+                break;
+            case "E":
+                requireFieldCount(fields, 5, taskLine);
+                task = new Event(fields[2], LocalDate.parse(fields[3]), LocalDate.parse(fields[4]));
+                break;
+            default:
+                throw new BobException("I found an unknown task type in the task file: " + fields[0]);
+            }
+        } catch (DateTimeParseException e) {
+            throw new BobException("I found an invalid date and time in the task file: " + taskLine);
         }
 
         if (fields[1].equals("1")) {
