@@ -55,7 +55,7 @@ class ParserTest {
     }
 
     /**
-     * Verifies that a todo description is trimmed and converted to its display and storage forms.
+     * Verifies that surrounding whitespace is removed from a valid find keyword.
      *
      * @throws BobException if the valid test input is unexpectedly rejected
      */
@@ -64,12 +64,20 @@ class ParserTest {
         assertEquals("return book", Parser.parseFindKeyword("find   return book  "));
     }
 
+    /**
+     * Verifies that a find command without a keyword is rejected.
+     */
     @Test
     void parseFindKeyword_missingKeyword_throwsBobException() {
         assertThrows(BobException.class, () -> Parser.parseFindKeyword("find"));
         assertThrows(BobException.class, () -> Parser.parseFindKeyword("find   "));
     }
 
+    /**
+     * Verifies that a todo description is trimmed and converted to its display and storage forms.
+     *
+     * @throws BobException if the valid test input is unexpectedly rejected
+     */
     @Test
     void parseTodo_validDescription_trimsAndCreatesTodo() throws BobException {
         Task task = Parser.parseTodo("todo   read book  ");

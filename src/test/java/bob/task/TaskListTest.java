@@ -12,6 +12,9 @@ import org.junit.jupiter.api.Test;
  * Tests task collection operations performed by {@link TaskList}.
  */
 class TaskListTest {
+    /**
+     * Verifies that matching tasks retain their original order.
+     */
     @Test
     void find_multipleMatchingDescriptions_returnsMatchesInOriginalOrder() {
         Task readBook = new Todo("read book");
@@ -25,6 +28,9 @@ class TaskListTest {
         assertEquals(List.of(readBook, returnBook), matches);
     }
 
+    /**
+     * Verifies that find searches descriptions rather than formatted task metadata.
+     */
     @Test
     void find_keywordOnlyInDateOrType_doesNotMatch() {
         TaskList tasks = new TaskList(List.of(
@@ -35,6 +41,9 @@ class TaskListTest {
         assertTrue(tasks.find("[T]").isEmpty());
     }
 
+    /**
+     * Verifies that find uses case-sensitive substring matching and returns an empty list when appropriate.
+     */
     @Test
     void find_differentCaseOrAbsentKeyword_returnsNoMatches() {
         TaskList tasks = new TaskList(List.of(new Todo("read book")));
