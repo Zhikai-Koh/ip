@@ -1,13 +1,13 @@
 package bob;
 
+import java.io.IOException;
+
 import bob.exception.BobException;
 import bob.parser.Parser;
 import bob.storage.Storage;
 import bob.task.Task;
 import bob.task.TaskList;
 import bob.ui.Ui;
-
-import java.io.IOException;
 
 /**
  * Starts the Bob chatbot application.
@@ -23,8 +23,8 @@ public class Bob {
      * @param filePath path of the file used to store tasks
      */
     public Bob(String filePath) {
-        this.ui = new Ui();
-        this.storage = new Storage(filePath);
+        ui = new Ui();
+        storage = new Storage(filePath);
 
         TaskList loadedTasks;
         try {
@@ -33,7 +33,7 @@ public class Bob {
             ui.showLoadingError(e.getMessage());
             loadedTasks = new TaskList();
         }
-        this.tasks = loadedTasks;
+        tasks = loadedTasks;
     }
 
     /**
@@ -53,20 +53,20 @@ public class Bob {
                 } else if (command.equals("list")) {
                     ui.showTaskList(tasks.getTasks());
                 } else if (Parser.isCommand(command, "mark")) {
-                    int itemID = Parser.parseTaskNumber(command, "mark", tasks.size());
-                    String marked = tasks.mark(itemID);
+                    int itemId = Parser.parseTaskNumber(command, "mark", tasks.size());
+                    String marked = tasks.mark(itemId);
                     storage.saveTasks(tasks.getTasks());
 
                     ui.showTaskMarked(marked);
                 } else if (Parser.isCommand(command, "unmark")) {
-                    int itemID = Parser.parseTaskNumber(command, "unmark", tasks.size());
-                    String marked = tasks.unmark(itemID);
+                    int itemId = Parser.parseTaskNumber(command, "unmark", tasks.size());
+                    String marked = tasks.unmark(itemId);
                     storage.saveTasks(tasks.getTasks());
 
                     ui.showTaskUnmarked(marked);
                 } else if (Parser.isCommand(command, "delete")) {
-                    int itemID = Parser.parseTaskNumber(command, "delete", tasks.size());
-                    Task removedTask = tasks.delete(itemID);
+                    int itemId = Parser.parseTaskNumber(command, "delete", tasks.size());
+                    Task removedTask = tasks.delete(itemId);
                     storage.saveTasks(tasks.getTasks());
 
                     ui.showTaskDeleted(removedTask, tasks.size());

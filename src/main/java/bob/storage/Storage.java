@@ -1,11 +1,5 @@
 package bob.storage;
 
-import bob.exception.BobException;
-import bob.task.Deadline;
-import bob.task.Event;
-import bob.task.Task;
-import bob.task.Todo;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -14,6 +8,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import bob.exception.BobException;
+import bob.task.Deadline;
+import bob.task.Event;
+import bob.task.Task;
+import bob.task.Todo;
 
 /**
  * Saves Bob's task list to a file on the hard disk.
@@ -68,20 +68,20 @@ public class Storage {
         Task task;
         try {
             switch (fields[0]) {
-            case "T":
-                requireFieldCount(fields, 3, taskLine);
-                task = new Todo(fields[2]);
-                break;
-            case "D":
-                requireFieldCount(fields, 4, taskLine);
-                task = new Deadline(fields[2], LocalDate.parse(fields[3]));
-                break;
-            case "E":
-                requireFieldCount(fields, 5, taskLine);
-                task = new Event(fields[2], LocalDate.parse(fields[3]), LocalDate.parse(fields[4]));
-                break;
-            default:
-                throw new BobException("I found an unknown task type in the task file: " + fields[0]);
+                case "T":
+                    requireFieldCount(fields, 3, taskLine);
+                    task = new Todo(fields[2]);
+                    break;
+                case "D":
+                    requireFieldCount(fields, 4, taskLine);
+                    task = new Deadline(fields[2], LocalDate.parse(fields[3]));
+                    break;
+                case "E":
+                    requireFieldCount(fields, 5, taskLine);
+                    task = new Event(fields[2], LocalDate.parse(fields[3]), LocalDate.parse(fields[4]));
+                    break;
+                default:
+                    throw new BobException("I found an unknown task type in the task file: " + fields[0]);
             }
         } catch (DateTimeParseException e) {
             throw new BobException("I found an invalid date and time in the task file: " + taskLine);

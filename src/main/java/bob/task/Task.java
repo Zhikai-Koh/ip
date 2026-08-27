@@ -17,7 +17,7 @@ public class Task {
     public Task(String description, TaskType type) {
         this.description = description;
         this.type = type;
-        this.status = TaskStatus.NOT_DONE;
+        status = TaskStatus.NOT_DONE;
     }
 
     /**
@@ -35,7 +35,7 @@ public class Task {
      * @return the task's status icon and description
      */
     public String mark() {
-        this.status = TaskStatus.DONE;
+        status = TaskStatus.DONE;
 
         return toString();
     }
@@ -46,7 +46,7 @@ public class Task {
      * @return the task's status icon and description
      */
     public String unmark() {
-        this.status = TaskStatus.NOT_DONE;
+        status = TaskStatus.NOT_DONE;
 
         return toString();
     }
@@ -57,7 +57,7 @@ public class Task {
      * @return the task description
      */
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     /**
