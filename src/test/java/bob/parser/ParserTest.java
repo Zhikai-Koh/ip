@@ -14,23 +14,37 @@ import bob.task.Task;
  * Tests command recognition and validation performed by {@link Parser}.
  */
 class ParserTest {
+    /**
+     * Verifies that complete command words are recognized both alone and with arguments.
+     */
     @Test
     void isCommand_exactCommandOrCommandWithArguments_returnsTrue() {
         assertTrue(Parser.isCommand("list", "list"));
         assertTrue(Parser.isCommand("todo read book", "todo"));
     }
 
+    /**
+     * Verifies that command text embedded in a different word or sentence is not recognized.
+     */
     @Test
     void isCommand_partialOrPrefixedCommand_returnsFalse() {
         assertFalse(Parser.isCommand("listing", "list"));
         assertFalse(Parser.isCommand("please list", "list"));
     }
 
+    /**
+     * Verifies that a valid task number is parsed despite surrounding whitespace.
+     *
+     * @throws BobException if the valid test input is unexpectedly rejected
+     */
     @Test
     void parseTaskNumber_validNumber_returnsOneBasedNumber() throws BobException {
         assertEquals(2, Parser.parseTaskNumber("mark   2  ", "mark", 3));
     }
 
+    /**
+     * Verifies that missing, non-numeric, out-of-range, and empty-list task numbers are rejected.
+     */
     @Test
     void parseTaskNumber_invalidArguments_throwsBobException() {
         assertThrows(BobException.class, () -> Parser.parseTaskNumber("mark", "mark", 3));
@@ -40,6 +54,11 @@ class ParserTest {
         assertThrows(BobException.class, () -> Parser.parseTaskNumber("mark 1", "mark", 0));
     }
 
+    /**
+     * Verifies that a todo description is trimmed and converted to its display and storage forms.
+     *
+     * @throws BobException if the valid test input is unexpectedly rejected
+     */
     @Test
     void parseTodo_validDescription_trimsAndCreatesTodo() throws BobException {
         Task task = Parser.parseTodo("todo   read book  ");
@@ -48,11 +67,19 @@ class ParserTest {
         assertEquals("T | 0 | read book", task.toDataString());
     }
 
+    /**
+     * Verifies that a todo without a description is rejected.
+     */
     @Test
     void parseTodo_emptyDescription_throwsBobException() {
         assertThrows(BobException.class, () -> Parser.parseTodo("todo   "));
     }
 
+    /**
+     * Verifies that a deadline command parses and formats a valid ISO date.
+     *
+     * @throws BobException if the valid test input is unexpectedly rejected
+     */
     @Test
     void parseDeadline_validCommand_parsesAndFormatsDate() throws BobException {
         Task task = Parser.parseDeadline("deadline return book /by 2019-12-02");
@@ -61,6 +88,9 @@ class ParserTest {
         assertEquals("D | 0 | return book | 2019-12-02", task.toDataString());
     }
 
+    /**
+     * Verifies that incomplete deadline commands and impossible dates are rejected.
+     */
     @Test
     void parseDeadline_missingFieldsOrInvalidDate_throwsBobException() {
         assertThrows(BobException.class, () -> Parser.parseDeadline("deadline return book"));
@@ -69,6 +99,11 @@ class ParserTest {
         assertThrows(BobException.class, () -> Parser.parseDeadline("deadline return book /by 2019-02-30"));
     }
 
+    /**
+     * Verifies that an event command parses and formats valid start and end dates.
+     *
+     * @throws BobException if the valid test input is unexpectedly rejected
+     */
     @Test
     void parseEvent_validCommand_parsesAndFormatsDates() throws BobException {
         Task task = Parser.parseEvent("event project meeting /from 2019-12-02 /to 2019-12-03");
@@ -77,6 +112,9 @@ class ParserTest {
         assertEquals("E | 0 | project meeting | 2019-12-02 | 2019-12-03", task.toDataString());
     }
 
+    /**
+     * Verifies that incomplete event commands and impossible dates are rejected.
+     */
     @Test
     void parseEvent_missingFieldsOrInvalidDates_throwsBobException() {
         assertThrows(BobException.class, () -> Parser.parseEvent("event project meeting"));

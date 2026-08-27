@@ -4,7 +4,10 @@ package bob.task;
  * Identifies whether a task is completed and provides its display icon.
  */
 public enum TaskStatus {
+    /** Indicates that a task has not been completed. */
     NOT_DONE("[ ]", "0"),
+
+    /** Indicates that a task has been completed. */
     DONE("[X]", "1");
 
     private final String icon;

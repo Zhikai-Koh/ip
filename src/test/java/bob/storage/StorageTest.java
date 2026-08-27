@@ -28,6 +28,12 @@ class StorageTest {
     @TempDir
     private Path temporaryDirectory;
 
+    /**
+     * Verifies that loading from a missing file starts with an empty task list.
+     *
+     * @throws IOException if storage access unexpectedly fails
+     * @throws BobException if valid storage data is unexpectedly rejected
+     */
     @Test
     void loadTasks_missingFile_returnsEmptyList() throws IOException, BobException {
         Storage storage = new Storage(temporaryDirectory.resolve("missing/tasks.txt").toString());
@@ -35,6 +41,12 @@ class StorageTest {
         assertTrue(storage.loadTasks().isEmpty());
     }
 
+    /**
+     * Verifies that all task types and completion states survive a save-load round trip.
+     *
+     * @throws IOException if storage access unexpectedly fails
+     * @throws BobException if the saved test data is unexpectedly rejected
+     */
     @Test
     void saveAndLoadTasks_allTaskTypesAndStatuses_roundTripsData() throws IOException, BobException {
         Path taskFile = temporaryDirectory.resolve("nested/data/tasks.txt");
@@ -57,6 +69,12 @@ class StorageTest {
                 loadedTasks.get(2).toDataString());
     }
 
+    /**
+     * Verifies that blank lines in a storage file do not create tasks or prevent loading.
+     *
+     * @throws IOException if storage access unexpectedly fails
+     * @throws BobException if the valid task entry is unexpectedly rejected
+     */
     @Test
     void loadTasks_blankLines_ignoresBlankEntries() throws IOException, BobException {
         Path taskFile = temporaryDirectory.resolve("tasks.txt");
@@ -68,6 +86,11 @@ class StorageTest {
         assertEquals("[T][ ] read book", tasks.get(0).toString());
     }
 
+    /**
+     * Verifies that malformed task types, statuses, fields, and dates are rejected.
+     *
+     * @throws IOException if a malformed temporary file cannot be prepared
+     */
     @Test
     void loadTasks_invalidSavedData_throwsBobException() throws IOException {
         assertInvalidSavedLine("unknown type", "X | 0 | read book");
