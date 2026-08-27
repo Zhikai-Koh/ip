@@ -4,8 +4,13 @@ package bob.task;
  * Identifies the supported task categories and their display icons.
  */
 public enum TaskType {
+    /** A task without an associated date. */
     TODO("[T]", "T"),
+
+    /** A task that must be completed by a date. */
     DEADLINE("[D]", "D"),
+
+    /** A task that occurs between a start and end date. */
     EVENT("[E]", "E");
 
     private final String icon;
