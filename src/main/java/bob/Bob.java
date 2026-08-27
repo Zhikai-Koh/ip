@@ -52,6 +52,9 @@ public class Bob {
                     break;
                 } else if (command.equals("list")) {
                     ui.showTaskList(tasks.getTasks());
+                } else if (Parser.isCommand(command, "find")) {
+                    String keyword = Parser.parseFindKeyword(command);
+                    ui.showMatchingTasks(tasks.find(keyword));
                 } else if (Parser.isCommand(command, "mark")) {
                     int itemID = Parser.parseTaskNumber(command, "mark", tasks.size());
                     String marked = tasks.mark(itemID);
@@ -81,7 +84,7 @@ public class Bob {
                     addTask(task);
                 } else {
                     throw new BobException("I couldn't match that to a command. "
-                            + "Try todo, deadline, event, list, mark, unmark, delete, or bye.");
+                            + "Try todo, deadline, event, list, find, mark, unmark, delete, or bye.");
                 }
             } catch (BobException e) {
                 ui.showError(e.getMessage());

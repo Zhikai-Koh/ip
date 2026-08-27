@@ -60,6 +60,21 @@ public final class Parser {
     }
 
     /**
+     * Extracts and validates the keyword from a find command.
+     *
+     * @param input full find command
+     * @return non-empty keyword to search for
+     * @throws BobException if no keyword is provided
+     */
+    public static String parseFindKeyword(String input) throws BobException {
+        String keyword = input.substring("find".length()).trim();
+        if (keyword.isEmpty()) {
+            throw new BobException("Tell me what to search for, for example: find book.");
+        }
+        return keyword;
+    }
+
+    /**
      * Creates a todo task from user input.
      *
      * @param input full todo command
