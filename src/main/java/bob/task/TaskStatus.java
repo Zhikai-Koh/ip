@@ -1,3 +1,5 @@
+package bob.task;
+
 /**
  * Identifies whether a task is completed and provides its display icon.
  */

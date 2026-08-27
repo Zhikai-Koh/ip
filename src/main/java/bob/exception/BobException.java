@@ -1,3 +1,5 @@
+package bob.exception;
+
 /**
  * Represents an error caused by a command that Bob cannot process.
  */

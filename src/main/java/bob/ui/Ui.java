@@ -1,3 +1,7 @@
+package bob.ui;
+
+import bob.task.Task;
+
 import java.util.List;
 import java.util.Scanner;
 
