@@ -1,13 +1,13 @@
 package bob.parser;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 import bob.exception.BobException;
 import bob.task.Deadline;
 import bob.task.Event;
 import bob.task.Task;
 import bob.task.Todo;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 /**
  * Interprets user commands and converts their arguments into application data.

@@ -1,9 +1,9 @@
 package bob.ui;
 
-import bob.task.Task;
-
 import java.util.List;
 import java.util.Scanner;
+
+import bob.task.Task;
 
 /**
  * Handles all interactions between Bob and the user.
@@ -23,7 +23,7 @@ public class Ui {
      * Creates a UI that reads commands from standard input.
      */
     public Ui() {
-        this.scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
     }
 
     /**
