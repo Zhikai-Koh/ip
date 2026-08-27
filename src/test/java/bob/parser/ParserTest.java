@@ -60,6 +60,17 @@ class ParserTest {
      * @throws BobException if the valid test input is unexpectedly rejected
      */
     @Test
+    void parseFindKeyword_validKeyword_trimsAndReturnsKeyword() throws BobException {
+        assertEquals("return book", Parser.parseFindKeyword("find   return book  "));
+    }
+
+    @Test
+    void parseFindKeyword_missingKeyword_throwsBobException() {
+        assertThrows(BobException.class, () -> Parser.parseFindKeyword("find"));
+        assertThrows(BobException.class, () -> Parser.parseFindKeyword("find   "));
+    }
+
+    @Test
     void parseTodo_validDescription_trimsAndCreatesTodo() throws BobException {
         Task task = Parser.parseTodo("todo   read book  ");
 
