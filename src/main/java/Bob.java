@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Starts the Bob chatbot application.
@@ -15,82 +14,65 @@ public class Bob {
      * @param args command-line arguments, which are not used
      */
     public static void main(String[] args) {
+        Ui ui = new Ui();
         Storage storage = new Storage("./data/bob.txt");
         ArrayList<Task> tasks;
         try {
             tasks = storage.loadTasks();
         } catch (IOException | BobException e) {
-            System.out.println("I couldn't load your saved tasks: " + e.getMessage());
+            ui.showLoadingError(e.getMessage());
             tasks = new ArrayList<>();
         }
 
-        String separator = "____________________________________________________________";
-        String banner = " ____        _     \n"
-                + "| __ )  ___ | |__  \n"
-                + "|  _ \\ / _ \\| '_ \\ \n"
-                + "| |_) | (_) | |_) |\n"
-                + "|____/ \\___/|_.__/ \n";
-        String greetings = "Hello! I'm Bob.\n"
-                + "What can I do for you?\n";
-        String goodbyes = "Bye. Hope to see you again soon!\n";
+        ui.showWelcome();
 
-        System.out.println(separator + "\n" + banner + greetings + separator);
-
-        Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextLine()) {
-            String command = scanner.nextLine();
-            System.out.println(separator);
+        while (ui.hasNextCommand()) {
+            String command = ui.readCommand();
+            ui.showLine();
             try {
                 if (command.equals("bye")) {
-                    System.out.print(goodbyes);
-                    System.out.println(separator);
+                    ui.showGoodbye();
+                    ui.showLine();
                     break;
                 } else if (command.equals("list")) {
-                    System.out.println("Here are the tasks in your list:");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println((i + 1) + "." + tasks.get(i));
-                    }
+                    ui.showTaskList(tasks);
                 } else if (isCommand(command, "mark")) {
                     int itemID = parseTaskNumber(command, "mark", tasks.size());
                     String marked = tasks.get(itemID - 1).mark();
                     storage.saveTasks(tasks);
 
-                    System.out.println("Nice! I've marked this task as done:");
-                    System.out.println("  " + marked);
+                    ui.showTaskMarked(marked);
                 } else if (isCommand(command, "unmark")) {
                     int itemID = parseTaskNumber(command, "unmark", tasks.size());
                     String marked = tasks.get(itemID - 1).unmark();
                     storage.saveTasks(tasks);
 
-                    System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.println("  " + marked);
+                    ui.showTaskUnmarked(marked);
                 } else if (isCommand(command, "delete")) {
                     int itemID = parseTaskNumber(command, "delete", tasks.size());
                     Task removedTask = tasks.remove(itemID - 1);
                     storage.saveTasks(tasks);
 
-                    System.out.println("Noted. I've removed this task:");
-                    System.out.println("  " + removedTask);
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    ui.showTaskDeleted(removedTask, tasks.size());
                 } else if (isCommand(command, "todo")) {
                     Task task = parseTodo(command);
-                    addTask(tasks, task, storage);
+                    addTask(tasks, task, storage, ui);
                 } else if (isCommand(command, "deadline")) {
                     Task task = parseDeadline(command);
-                    addTask(tasks, task, storage);
+                    addTask(tasks, task, storage, ui);
                 } else if (isCommand(command, "event")) {
                     Task task = parseEvent(command);
-                    addTask(tasks, task, storage);
+                    addTask(tasks, task, storage, ui);
                 } else {
                     throw new BobException("I couldn't match that to a command. "
                             + "Try todo, deadline, event, list, mark, unmark, delete, or bye.");
                 }
             } catch (BobException e) {
-                System.out.println(e.getMessage());
+                ui.showError(e.getMessage());
             } catch (IOException e) {
-                System.out.println("I couldn't save your tasks. Please try again.");
+                ui.showSavingError();
             }
-            System.out.println(separator);
+            ui.showLine();
         }
     }
 
@@ -235,23 +217,12 @@ public class Bob {
      * @param tasks list in which tasks are stored
      * @param task task to add
      * @param storage storage used to save the updated task list
+     * @param ui user interface used to display confirmation
      * @throws IOException if the task list cannot be saved
      */
-    private static void addTask(ArrayList<Task> tasks, Task task, Storage storage) throws IOException {
+    private static void addTask(ArrayList<Task> tasks, Task task, Storage storage, Ui ui) throws IOException {
         tasks.add(task);
         storage.saveTasks(tasks);
-        printTaskAdded(task, tasks.size());
-    }
-
-    /**
-     * Displays confirmation that a task was added and reports the new task count.
-     *
-     * @param task task that was added
-     * @param taskCount number of tasks currently stored
-     */
-    private static void printTaskAdded(Task task, int taskCount) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        ui.showTaskAdded(task, tasks.size());
     }
 }
