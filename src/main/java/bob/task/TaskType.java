@@ -1,3 +1,5 @@
+package bob.task;
+
 /**
  * Identifies the supported task categories and their display icons.
  */

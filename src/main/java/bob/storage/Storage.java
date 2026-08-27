@@ -1,3 +1,11 @@
+package bob.storage;
+
+import bob.exception.BobException;
+import bob.task.Deadline;
+import bob.task.Event;
+import bob.task.Task;
+import bob.task.Todo;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;

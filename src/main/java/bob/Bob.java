@@ -1,3 +1,12 @@
+package bob;
+
+import bob.exception.BobException;
+import bob.parser.Parser;
+import bob.storage.Storage;
+import bob.task.Task;
+import bob.task.TaskList;
+import bob.ui.Ui;
+
 import java.io.IOException;
 
 /**
