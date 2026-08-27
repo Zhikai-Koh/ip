@@ -24,4 +24,14 @@ public class Deadline extends Task {
     public String toString() {
         return super.toString() + " (by: " + by + ")";
     }
+
+    /**
+     * Returns a representation of this deadline suitable for saving to a file.
+     *
+     * @return pipe-separated deadline data
+     */
+    @Override
+    public String toDataString() {
+        return super.toDataString() + " | " + by;
+    }
 }

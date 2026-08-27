@@ -2,19 +2,22 @@
  * Identifies the supported task categories and their display icons.
  */
 public enum TaskType {
-    TODO("[T]"),
-    DEADLINE("[D]"),
-    EVENT("[E]");
+    TODO("[T]", "T"),
+    DEADLINE("[D]", "D"),
+    EVENT("[E]", "E");
 
     private final String icon;
+    private final String storageCode;
 
     /**
      * Creates a task type with its display icon.
      *
      * @param icon icon used when displaying this task type
+     * @param storageCode code used when saving this task type
      */
-    TaskType(String icon) {
+    TaskType(String icon, String storageCode) {
         this.icon = icon;
+        this.storageCode = storageCode;
     }
 
     /**
@@ -24,5 +27,14 @@ public enum TaskType {
      */
     public String getIcon() {
         return icon;
+    }
+
+    /**
+     * Returns the code used to identify this task type in the storage file.
+     *
+     * @return task type storage code
+     */
+    public String getStorageCode() {
+        return storageCode;
     }
 }

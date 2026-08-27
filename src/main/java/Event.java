@@ -27,4 +27,14 @@ public class Event extends Task {
     public String toString() {
         return super.toString() + " (from: " + from + " to: " + to + ")";
     }
+
+    /**
+     * Returns a representation of this event suitable for saving to a file.
+     *
+     * @return pipe-separated event data
+     */
+    @Override
+    public String toDataString() {
+        return super.toDataString() + " | " + from + " | " + to;
+    }
 }

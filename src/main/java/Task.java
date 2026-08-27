@@ -59,6 +59,15 @@ public class Task {
     }
 
     /**
+     * Returns a representation of this task suitable for saving to a file.
+     *
+     * @return pipe-separated task data
+     */
+    public String toDataString() {
+        return type.getStorageCode() + " | " + status.getStorageValue() + " | " + description;
+    }
+
+    /**
      * Returns the task in the format used when displaying it to the user.
      *
      * @return the task's type icon, status icon, and description

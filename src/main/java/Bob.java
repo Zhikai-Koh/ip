@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,7 +13,14 @@ public class Bob {
      * @param args command-line arguments, which are not used
      */
     public static void main(String[] args) {
-        ArrayList<Task> tasks = new ArrayList<>();
+        Storage storage = new Storage("./data/bob.txt");
+        ArrayList<Task> tasks;
+        try {
+            tasks = storage.loadTasks();
+        } catch (IOException | BobException e) {
+            System.out.println("I couldn't load your saved tasks: " + e.getMessage());
+            tasks = new ArrayList<>();
+        }
 
         String separator = "____________________________________________________________";
         String banner = " ____        _     \n"
@@ -43,37 +51,42 @@ public class Bob {
                 } else if (isCommand(command, "mark")) {
                     int itemID = parseTaskNumber(command, "mark", tasks.size());
                     String marked = tasks.get(itemID - 1).mark();
+                    storage.saveTasks(tasks);
 
                     System.out.println("Nice! I've marked this task as done:");
                     System.out.println("  " + marked);
                 } else if (isCommand(command, "unmark")) {
                     int itemID = parseTaskNumber(command, "unmark", tasks.size());
                     String marked = tasks.get(itemID - 1).unmark();
+                    storage.saveTasks(tasks);
 
                     System.out.println("OK, I've marked this task as not done yet:");
                     System.out.println("  " + marked);
                 } else if (isCommand(command, "delete")) {
                     int itemID = parseTaskNumber(command, "delete", tasks.size());
                     Task removedTask = tasks.remove(itemID - 1);
+                    storage.saveTasks(tasks);
 
                     System.out.println("Noted. I've removed this task:");
                     System.out.println("  " + removedTask);
                     System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                 } else if (isCommand(command, "todo")) {
                     Task task = parseTodo(command);
-                    addTask(tasks, task);
+                    addTask(tasks, task, storage);
                 } else if (isCommand(command, "deadline")) {
                     Task task = parseDeadline(command);
-                    addTask(tasks, task);
+                    addTask(tasks, task, storage);
                 } else if (isCommand(command, "event")) {
                     Task task = parseEvent(command);
-                    addTask(tasks, task);
+                    addTask(tasks, task, storage);
                 } else {
                     throw new BobException("I couldn't match that to a command. "
                             + "Try todo, deadline, event, list, mark, unmark, delete, or bye.");
                 }
             } catch (BobException e) {
                 System.out.println(e.getMessage());
+            } catch (IOException e) {
+                System.out.println("I couldn't save your tasks. Please try again.");
             }
             System.out.println(separator);
         }
@@ -203,9 +216,12 @@ public class Bob {
      *
      * @param tasks list in which tasks are stored
      * @param task task to add
+     * @param storage storage used to save the updated task list
+     * @throws IOException if the task list cannot be saved
      */
-    private static void addTask(ArrayList<Task> tasks, Task task) {
+    private static void addTask(ArrayList<Task> tasks, Task task, Storage storage) throws IOException {
         tasks.add(task);
+        storage.saveTasks(tasks);
         printTaskAdded(task, tasks.size());
     }
 
