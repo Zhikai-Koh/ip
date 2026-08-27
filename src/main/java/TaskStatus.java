@@ -2,18 +2,21 @@
  * Identifies whether a task is completed and provides its display icon.
  */
 public enum TaskStatus {
-    NOT_DONE("[ ]"),
-    DONE("[X]");
+    NOT_DONE("[ ]", "0"),
+    DONE("[X]", "1");
 
     private final String icon;
+    private final String storageValue;
 
     /**
      * Creates a task status with its display icon.
      *
      * @param icon icon used when displaying this status
+     * @param storageValue value used when saving this status
      */
-    TaskStatus(String icon) {
+    TaskStatus(String icon, String storageValue) {
         this.icon = icon;
+        this.storageValue = storageValue;
     }
 
     /**
@@ -23,5 +26,14 @@ public enum TaskStatus {
      */
     public String getIcon() {
         return icon;
+    }
+
+    /**
+     * Returns the value used to represent this status in the storage file.
+     *
+     * @return task status storage value
+     */
+    public String getStorageValue() {
+        return storageValue;
     }
 }
