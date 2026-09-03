@@ -16,6 +16,8 @@ public class Bob {
     private final Storage storage;
     private final TaskList tasks;
     private final Ui ui;
+    private final String loadingError;
+    private boolean isExit;
 
     /**
      * Creates Bob and loads tasks from the given storage file.
@@ -27,13 +29,15 @@ public class Bob {
         storage = new Storage(filePath);
 
         TaskList loadedTasks;
+        String loadError = null;
         try {
             loadedTasks = new TaskList(storage.loadTasks());
         } catch (IOException | BobException e) {
-            ui.showLoadingError(e.getMessage());
+            loadError = e.getMessage();
             loadedTasks = new TaskList();
         }
         tasks = loadedTasks;
+        loadingError = loadError;
     }
 
     /**
@@ -41,70 +45,102 @@ public class Bob {
      */
     public void run() {
         ui.showWelcome();
+        if (loadingError != null) {
+            ui.showMessage(ui.getLoadingErrorMessage(loadingError));
+        }
 
         while (ui.hasNextCommand()) {
             String command = ui.readCommand();
             ui.showLine();
-            try {
-                if (command.equals("bye")) {
-                    ui.showGoodbye();
-                    ui.showLine();
-                    break;
-                } else if (command.equals("list")) {
-                    ui.showTaskList(tasks.getTasks());
-                } else if (Parser.isCommand(command, "find")) {
-                    String keyword = Parser.parseFindKeyword(command);
-                    ui.showMatchingTasks(tasks.find(keyword));
-                } else if (Parser.isCommand(command, "mark")) {
-                    int itemId = Parser.parseTaskNumber(command, "mark", tasks.size());
-                    String marked = tasks.mark(itemId);
-                    storage.saveTasks(tasks.getTasks());
-
-                    ui.showTaskMarked(marked);
-                } else if (Parser.isCommand(command, "unmark")) {
-                    int itemId = Parser.parseTaskNumber(command, "unmark", tasks.size());
-                    String marked = tasks.unmark(itemId);
-                    storage.saveTasks(tasks.getTasks());
-
-                    ui.showTaskUnmarked(marked);
-                } else if (Parser.isCommand(command, "delete")) {
-                    int itemId = Parser.parseTaskNumber(command, "delete", tasks.size());
-                    Task removedTask = tasks.delete(itemId);
-                    storage.saveTasks(tasks.getTasks());
-
-                    ui.showTaskDeleted(removedTask, tasks.size());
-                } else if (Parser.isCommand(command, "todo")) {
-                    Task task = Parser.parseTodo(command);
-                    addTask(task);
-                } else if (Parser.isCommand(command, "deadline")) {
-                    Task task = Parser.parseDeadline(command);
-                    addTask(task);
-                } else if (Parser.isCommand(command, "event")) {
-                    Task task = Parser.parseEvent(command);
-                    addTask(task);
-                } else {
-                    throw new BobException("I couldn't match that to a command. "
-                            + "Try todo, deadline, event, list, find, mark, unmark, delete, or bye.");
-                }
-            } catch (BobException e) {
-                ui.showError(e.getMessage());
-            } catch (IOException e) {
-                ui.showSavingError();
-            }
+            ui.showMessage(getResponse(command));
             ui.showLine();
+            if (isExit) {
+                break;
+            }
         }
     }
 
     /**
-     * Stores a task and displays confirmation.
+     * Executes one command and returns the response for either a console or graphical UI.
+     *
+     * @param command command entered by the user
+     * @return response to display
+     */
+    public String getResponse(String command) {
+        String input = command.trim();
+        try {
+            if (input.equals("bye")) {
+                isExit = true;
+                return ui.getGoodbyeMessage();
+            } else if (input.equals("list")) {
+                return ui.getTaskListMessage(tasks.getTasks());
+            } else if (Parser.isCommand(input, "find")) {
+                String keyword = Parser.parseFindKeyword(input);
+                return ui.getMatchingTasksMessage(tasks.find(keyword));
+            } else if (Parser.isCommand(input, "mark")) {
+                int itemId = Parser.parseTaskNumber(input, "mark", tasks.size());
+                String marked = tasks.mark(itemId);
+                storage.saveTasks(tasks.getTasks());
+                return ui.getTaskMarkedMessage(marked);
+            } else if (Parser.isCommand(input, "unmark")) {
+                int itemId = Parser.parseTaskNumber(input, "unmark", tasks.size());
+                String marked = tasks.unmark(itemId);
+                storage.saveTasks(tasks.getTasks());
+                return ui.getTaskUnmarkedMessage(marked);
+            } else if (Parser.isCommand(input, "delete")) {
+                int itemId = Parser.parseTaskNumber(input, "delete", tasks.size());
+                Task removedTask = tasks.delete(itemId);
+                storage.saveTasks(tasks.getTasks());
+                return ui.getTaskDeletedMessage(removedTask, tasks.size());
+            } else if (Parser.isCommand(input, "todo")) {
+                return addTask(Parser.parseTodo(input));
+            } else if (Parser.isCommand(input, "deadline")) {
+                return addTask(Parser.parseDeadline(input));
+            } else if (Parser.isCommand(input, "event")) {
+                return addTask(Parser.parseEvent(input));
+            }
+            throw new BobException("I couldn't match that to a command. "
+                    + "Try todo, deadline, event, list, find, mark, unmark, delete, or bye.");
+        } catch (BobException e) {
+            return e.getMessage();
+        } catch (IOException e) {
+            return ui.getSavingErrorMessage();
+        }
+    }
+
+    /**
+     * Returns the greeting and any problem encountered while loading saved tasks.
+     *
+     * @return startup message for a graphical UI
+     */
+    public String getWelcomeMessage() {
+        String message = ui.getWelcomeMessage();
+        if (loadingError != null) {
+            message += "\n\n" + ui.getLoadingErrorMessage(loadingError);
+        }
+        return message;
+    }
+
+    /**
+     * Checks whether the user has entered the exit command.
+     *
+     * @return true after processing {@code bye}
+     */
+    public boolean isExit() {
+        return isExit;
+    }
+
+    /**
+     * Stores a task and creates its confirmation response.
      *
      * @param task task to add
+     * @return confirmation to display
      * @throws IOException if the task list cannot be saved
      */
-    private void addTask(Task task) throws IOException {
+    private String addTask(Task task) throws IOException {
         tasks.add(task);
         storage.saveTasks(tasks.getTasks());
-        ui.showTaskAdded(task, tasks.size());
+        return ui.getTaskAddedMessage(task, tasks.size());
     }
 
     /**

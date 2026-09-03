@@ -1,0 +1,47 @@
+.root {
+    -fx-background-color: #f4f7fb;
+    -fx-font-family: "Arial";
+}
+
+.scroll-pane,
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-padding: 8px 0 8px 0;
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-background-radius: 0;
+    -fx-border-color: #d7deea;
+    -fx-border-width: 1px 0 0 0;
+    -fx-font-size: 15px;
+    -fx-padding: 0 16px;
+}
+
+.button {
+    -fx-background-color: #2563eb;
+    -fx-background-radius: 0;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.button:pressed {
+    -fx-background-color: #1e40af;
+}
+
+.button:disabled {
+    -fx-background-color: #94a3b8;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #b7c2d3;
+    -fx-background-radius: 8px;
+}

@@ -1,0 +1,24 @@
+.label {
+    -fx-background-color: #dbeafe;
+    -fx-background-radius: 14px 14px 3px 14px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #172033;
+}
+
+.reply-label {
+    -fx-background-color: white;
+    -fx-background-radius: 14px 14px 14px 3px;
+    -fx-effect: dropshadow(gaussian, rgba(30, 41, 59, 0.10), 8, 0, 0, 2);
+}
+
+#avatar {
+    -fx-background-color: #0f172a;
+    -fx-background-radius: 26px;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+#avatar.bob-avatar {
+    -fx-background-color: #2563eb;
+}
