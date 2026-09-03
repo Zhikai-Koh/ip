@@ -141,7 +141,7 @@ class ParserTest {
         assertThrows(BobException.class, () -> Parser.parseEvent("event meeting /from 2019-12-02"));
         assertThrows(BobException.class, () -> Parser.parseEvent("event meeting /from /to 2019-12-03"));
         assertThrows(BobException.class, () -> Parser.parseEvent("event meeting /from 2019-12-02 /to"));
-        assertThrows(BobException.class,
-                () -> Parser.parseEvent("event meeting /from 2019-02-30 /to 2019-12-03"));
+        assertThrows(BobException.class, () -> Parser.parseEvent(
+                "event meeting /from 2019-02-30 /to 2019-12-03"));
     }
 }
