@@ -40,7 +40,7 @@ public class Ui {
      * @return greeting for a graphical UI
      */
     public String getWelcomeMessage() {
-        return "Hello! I'm Bob.\nWhat can I do for you?";
+        return formatLines("Hello! I'm Bob.", "What can I do for you?");
     }
 
     /**
@@ -121,7 +121,7 @@ public class Ui {
      * @return task-marked response
      */
     public String getTaskMarkedMessage(String taskDisplay) {
-        return "Nice! I've marked this task as done:\n  " + taskDisplay;
+        return formatLines("Nice! I've marked this task as done:", "  " + taskDisplay);
     }
 
     /**
@@ -131,7 +131,7 @@ public class Ui {
      * @return task-unmarked response
      */
     public String getTaskUnmarkedMessage(String taskDisplay) {
-        return "OK, I've marked this task as not done yet:\n  " + taskDisplay;
+        return formatLines("OK, I've marked this task as not done yet:", "  " + taskDisplay);
     }
 
     /**
@@ -142,8 +142,10 @@ public class Ui {
      * @return task-deleted response
      */
     public String getTaskDeletedMessage(Task task, int taskCount) {
-        return "Noted. I've removed this task:\n  " + task
-                + "\nNow you have " + taskCount + " tasks in the list.";
+        return formatLines(
+                "Noted. I've removed this task:",
+                "  " + task,
+                "Now you have " + taskCount + " tasks in the list.");
     }
 
     /**
@@ -154,8 +156,10 @@ public class Ui {
      * @return task-added response
      */
     public String getTaskAddedMessage(Task task, int taskCount) {
-        return "Got it. I've added this task:\n  " + task
-                + "\nNow you have " + taskCount + " tasks in the list.";
+        return formatLines(
+                "Got it. I've added this task:",
+                "  " + task,
+                "Now you have " + taskCount + " tasks in the list.");
     }
 
     /**
@@ -175,5 +179,15 @@ public class Ui {
      */
     public String getSavingErrorMessage() {
         return "I couldn't save your tasks. Please try again.";
+    }
+
+    /**
+     * Combines any number of response lines into one display message.
+     *
+     * @param lines response lines in display order
+     * @return lines separated by newline characters
+     */
+    private static String formatLines(String... lines) {
+        return String.join("\n", lines);
     }
 }
