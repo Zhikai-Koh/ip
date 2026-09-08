@@ -13,12 +13,25 @@ import bob.exception.BobException;
 import bob.task.Deadline;
 import bob.task.Event;
 import bob.task.Task;
+import bob.task.TaskStatus;
+import bob.task.TaskType;
 import bob.task.Todo;
 
 /**
  * Saves Bob's task list to a file on the hard disk.
  */
 public class Storage {
+    private static final String FIELD_SEPARATOR_PATTERN = " \\| ";
+    private static final int MINIMUM_FIELD_COUNT = 3;
+    private static final int TODO_FIELD_COUNT = 3;
+    private static final int DEADLINE_FIELD_COUNT = 4;
+    private static final int EVENT_FIELD_COUNT = 5;
+    private static final int TYPE_FIELD_INDEX = 0;
+    private static final int STATUS_FIELD_INDEX = 1;
+    private static final int DESCRIPTION_FIELD_INDEX = 2;
+    private static final int START_DATE_FIELD_INDEX = 3;
+    private static final int END_DATE_FIELD_INDEX = 4;
+
     private final Path filePath;
 
     /**
@@ -60,39 +73,81 @@ public class Storage {
      * @throws BobException if the task type, status, or number of fields is invalid
      */
     private Task parseTask(String taskLine) throws BobException {
-        String[] fields = taskLine.split(" \\| ", -1);
-        if (fields.length < 3) {
+        String[] fields = taskLine.split(FIELD_SEPARATOR_PATTERN, -1);
+        if (fields.length < MINIMUM_FIELD_COUNT) {
             throw new BobException("I found an invalid entry in the task file: " + taskLine);
         }
 
-        Task task;
+        TaskType taskType = parseTaskType(fields[TYPE_FIELD_INDEX]);
+        TaskStatus taskStatus = parseTaskStatus(fields[STATUS_FIELD_INDEX]);
+        Task task = createTask(taskType, fields, taskLine);
+        if (taskStatus == TaskStatus.DONE) {
+            task.mark();
+        }
+        return task;
+    }
+
+    /**
+     * Creates a task of the stored type using its remaining fields.
+     *
+     * @param taskType stored task type
+     * @param fields fields parsed from the storage line
+     * @param taskLine original saved task data
+     * @return reconstructed task
+     * @throws BobException if the field count or a date is invalid
+     */
+    private Task createTask(TaskType taskType, String[] fields, String taskLine) throws BobException {
         try {
-            switch (fields[0]) {
-                case "T":
-                    requireFieldCount(fields, 3, taskLine);
-                    task = new Todo(fields[2]);
-                    break;
-                case "D":
-                    requireFieldCount(fields, 4, taskLine);
-                    task = new Deadline(fields[2], LocalDate.parse(fields[3]));
-                    break;
-                case "E":
-                    requireFieldCount(fields, 5, taskLine);
-                    task = new Event(fields[2], LocalDate.parse(fields[3]), LocalDate.parse(fields[4]));
-                    break;
-                default:
-                    throw new BobException("I found an unknown task type in the task file: " + fields[0]);
-            }
+            return switch (taskType) {
+                case TODO -> {
+                    requireFieldCount(fields, TODO_FIELD_COUNT, taskLine);
+                    yield new Todo(fields[DESCRIPTION_FIELD_INDEX]);
+                }
+                case DEADLINE -> {
+                    requireFieldCount(fields, DEADLINE_FIELD_COUNT, taskLine);
+                    yield new Deadline(fields[DESCRIPTION_FIELD_INDEX],
+                            LocalDate.parse(fields[START_DATE_FIELD_INDEX]));
+                }
+                case EVENT -> {
+                    requireFieldCount(fields, EVENT_FIELD_COUNT, taskLine);
+                    yield new Event(fields[DESCRIPTION_FIELD_INDEX],
+                            LocalDate.parse(fields[START_DATE_FIELD_INDEX]),
+                            LocalDate.parse(fields[END_DATE_FIELD_INDEX]));
+                }
+            };
         } catch (DateTimeParseException e) {
             throw new BobException("I found an invalid date and time in the task file: " + taskLine);
         }
+    }
 
-        if (fields[1].equals("1")) {
-            task.mark();
-        } else if (!fields[1].equals("0")) {
-            throw new BobException("I found an invalid task status in the task file: " + fields[1]);
+    /**
+     * Converts a stored task-type code into its enum value.
+     *
+     * @param storageCode task-type code read from storage
+     * @return matching task type
+     * @throws BobException if the code is unknown
+     */
+    private TaskType parseTaskType(String storageCode) throws BobException {
+        try {
+            return TaskType.fromStorageCode(storageCode);
+        } catch (IllegalArgumentException e) {
+            throw new BobException("I found an unknown task type in the task file: " + storageCode);
         }
-        return task;
+    }
+
+    /**
+     * Converts a stored task-status value into its enum value.
+     *
+     * @param storageValue task-status value read from storage
+     * @return matching task status
+     * @throws BobException if the value is unknown
+     */
+    private TaskStatus parseTaskStatus(String storageValue) throws BobException {
+        try {
+            return TaskStatus.fromStorageValue(storageValue);
+        } catch (IllegalArgumentException e) {
+            throw new BobException("I found an invalid task status in the task file: " + storageValue);
+        }
     }
 
     /**

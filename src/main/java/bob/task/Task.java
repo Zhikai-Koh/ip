@@ -15,6 +15,7 @@ public class Task {
      * @param type category of the task
      */
     public Task(String description, TaskType type) {
+        assert description != null;
         this.description = description;
         this.type = type;
         status = TaskStatus.NOT_DONE;

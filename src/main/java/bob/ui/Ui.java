@@ -93,11 +93,7 @@ public class Ui {
      * @return formatted task-list response
      */
     public String getTaskListMessage(List<Task> tasks) {
-        StringBuilder message = new StringBuilder("Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            message.append("\n").append(i + 1).append(".").append(tasks.get(i));
-        }
-        return message.toString();
+        return formatNumberedTasks("Here are the tasks in your list:", tasks);
     }
 
     /**
@@ -107,11 +103,7 @@ public class Ui {
      * @return formatted matching-task response
      */
     public String getMatchingTasksMessage(List<Task> tasks) {
-        StringBuilder message = new StringBuilder("Here are the matching tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            message.append("\n").append(i + 1).append(".").append(tasks.get(i));
-        }
-        return message.toString();
+        return formatNumberedTasks("Here are the matching tasks in your list:", tasks);
     }
 
     /**
@@ -179,6 +171,24 @@ public class Ui {
      */
     public String getSavingErrorMessage() {
         return "I couldn't save your tasks. Please try again.";
+    }
+
+    /**
+     * Formats tasks under a heading using one-based numbering.
+     *
+     * @param heading text displayed before the tasks
+     * @param tasks tasks to format
+     * @return heading followed by numbered tasks
+     */
+    private static String formatNumberedTasks(String heading, List<Task> tasks) {
+        StringBuilder message = new StringBuilder(heading);
+        for (int i = 0; i < tasks.size(); i++) {
+            message.append("\n")
+                    .append(i + 1)
+                    .append(".")
+                    .append(tasks.get(i));
+        }
+        return message.toString();
     }
 
     /**
