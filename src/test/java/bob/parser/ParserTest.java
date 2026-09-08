@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 
 import bob.exception.BobException;
@@ -71,6 +73,19 @@ class ParserTest {
     void parseFindKeyword_missingKeyword_throwsBobException() {
         assertThrows(BobException.class, () -> Parser.parseFindKeyword("find"));
         assertThrows(BobException.class, () -> Parser.parseFindKeyword("find   "));
+    }
+
+    /**
+     * Verifies that schedule dates are parsed and invalid dates are rejected.
+     *
+     * @throws BobException if the valid test input is unexpectedly rejected
+     */
+    @Test
+    void parseScheduleDate_validAndInvalidArguments_returnsDateOrThrows() throws BobException {
+        assertEquals(LocalDate.parse("2019-12-02"),
+                Parser.parseScheduleDate("schedule 2019-12-02"));
+        assertThrows(BobException.class, () -> Parser.parseScheduleDate("schedule"));
+        assertThrows(BobException.class, () -> Parser.parseScheduleDate("schedule 2019-02-30"));
     }
 
     /**

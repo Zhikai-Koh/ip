@@ -26,6 +26,17 @@ public class Event extends Task {
     }
 
     /**
+     * Checks whether this event's inclusive date range contains a date.
+     *
+     * @param date date whose schedule is being viewed
+     * @return true if the event occurs on the date
+     */
+    @Override
+    public boolean occursOn(LocalDate date) {
+        return !date.isBefore(from) && !date.isAfter(to);
+    }
+
+    /**
      * Returns the event task in its display format.
      *
      * @return the task type, status, description, start, and end

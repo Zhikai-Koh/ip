@@ -23,6 +23,17 @@ public class Deadline extends Task {
     }
 
     /**
+     * Checks whether this deadline is due on a date.
+     *
+     * @param date date whose schedule is being viewed
+     * @return true if the deadline is due on the date
+     */
+    @Override
+    public boolean occursOn(LocalDate date) {
+        return by.equals(date);
+    }
+
+    /**
      * Returns the deadline task in its display format.
      *
      * @return the task type, status, description, and deadline
