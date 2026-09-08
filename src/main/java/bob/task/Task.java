@@ -1,5 +1,7 @@
 package bob.task;
 
+import java.time.LocalDate;
+
 /**
  * Represents a task with a description and completion status.
  */
@@ -59,6 +61,16 @@ public class Task {
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Checks whether this task belongs in the schedule for a date.
+     *
+     * @param date date whose schedule is being viewed
+     * @return true if this task occurs on the date
+     */
+    public boolean occursOn(LocalDate date) {
+        return false;
     }
 
     /**

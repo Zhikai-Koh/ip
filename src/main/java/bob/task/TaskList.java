@@ -1,5 +1,6 @@
 package bob.task;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -83,6 +84,18 @@ public class TaskList {
     public List<Task> find(String keyword) {
         return tasks.stream()
                 .filter(task -> task.getDescription().contains(keyword))
+                .toList();
+    }
+
+    /**
+     * Finds dated tasks that occur on a given date.
+     *
+     * @param date date whose schedule is being viewed
+     * @return scheduled tasks in their original list order
+     */
+    public List<Task> getSchedule(LocalDate date) {
+        return tasks.stream()
+                .filter(task -> task.occursOn(date))
                 .toList();
     }
 

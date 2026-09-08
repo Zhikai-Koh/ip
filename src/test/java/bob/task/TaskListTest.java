@@ -51,4 +51,21 @@ class TaskListTest {
         assertTrue(tasks.find("Book").isEmpty());
         assertTrue(tasks.find("homework").isEmpty());
     }
+
+    /**
+     * Verifies that schedules include exact deadlines and events spanning the requested date.
+     */
+    @Test
+    void getSchedule_datedTasks_returnsTasksOccurringOnDate() {
+        Task todo = new Todo("read book");
+        Task deadline = new Deadline("return book", LocalDate.parse("2019-12-02"));
+        Task spanningEvent = new Event("camp",
+                LocalDate.parse("2019-12-01"), LocalDate.parse("2019-12-03"));
+        Task laterEvent = new Event("meeting",
+                LocalDate.parse("2019-12-03"), LocalDate.parse("2019-12-03"));
+        TaskList tasks = new TaskList(List.of(todo, deadline, spanningEvent, laterEvent));
+
+        assertEquals(List.of(deadline, spanningEvent),
+                tasks.getSchedule(LocalDate.parse("2019-12-02")));
+    }
 }

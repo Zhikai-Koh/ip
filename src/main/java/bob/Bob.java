@@ -1,6 +1,7 @@
 package bob;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import bob.exception.BobException;
 import bob.parser.Parser;
@@ -98,6 +99,10 @@ public class Bob {
             String keyword = Parser.parseFindKeyword(input);
             return ui.getMatchingTasksMessage(tasks.find(keyword));
         }
+        if (Parser.isCommand(input, "schedule")) {
+            LocalDate date = Parser.parseScheduleDate(input);
+            return ui.getScheduleMessage(date, tasks.getSchedule(date));
+        }
         if (Parser.isCommand(input, "mark")) {
             return markTask(input);
         }
@@ -117,7 +122,7 @@ public class Bob {
             return addTask(Parser.parseEvent(input));
         }
         throw new BobException("I couldn't match that to a command. "
-                + "Try todo, deadline, event, list, find, mark, unmark, delete, or bye.");
+                + "Try todo, deadline, event, list, find, schedule, mark, unmark, delete, or bye.");
     }
 
     /**

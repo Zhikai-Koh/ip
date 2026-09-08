@@ -75,6 +75,21 @@ public final class Parser {
     }
 
     /**
+     * Extracts and validates the date from a schedule command.
+     *
+     * @param input full schedule command
+     * @return requested schedule date
+     * @throws BobException if the date is missing or invalid
+     */
+    public static LocalDate parseScheduleDate(String input) throws BobException {
+        String dateText = input.substring("schedule".length()).trim();
+        if (dateText.isEmpty()) {
+            throw new BobException("Tell me which date to show, for example: schedule 2019-12-02.");
+        }
+        return parseDate(dateText);
+    }
+
+    /**
      * Creates a todo task from user input.
      *
      * @param input full todo command

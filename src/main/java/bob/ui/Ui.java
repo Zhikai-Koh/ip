@@ -1,5 +1,7 @@
 package bob.ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,6 +11,7 @@ import bob.task.Task;
  * Handles all interactions between Bob and the user.
  */
 public class Ui {
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy");
     private static final String SEPARATOR =
             "____________________________________________________________";
     private static final String BANNER = " ____        _     \n"
@@ -104,6 +107,17 @@ public class Ui {
      */
     public String getMatchingTasksMessage(List<Task> tasks) {
         return formatNumberedTasks("Here are the matching tasks in your list:", tasks);
+    }
+
+    /**
+     * Creates a numbered schedule for a date.
+     *
+     * @param date date being viewed
+     * @param tasks tasks occurring on the date
+     * @return formatted schedule response
+     */
+    public String getScheduleMessage(LocalDate date, List<Task> tasks) {
+        return formatNumberedTasks("Here is your schedule for " + date.format(DATE_FORMAT) + ":", tasks);
     }
 
     /**
