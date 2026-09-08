@@ -2,6 +2,7 @@ package bob;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
@@ -40,6 +41,14 @@ class BobTest {
                 bob.getResponse("unknown"));
         assertEquals("Bye. Hope to see you again soon!", bob.getResponse("bye"));
         assertTrue(bob.isExit());
+    }
+
+    @Test
+    void constructorOrGetResponse_nullInternalInput_throwsAssertionError() {
+        Bob bob = createBob();
+
+        assertThrows(AssertionError.class, () -> new Bob(null));
+        assertThrows(AssertionError.class, () -> bob.getResponse(null));
     }
 
     private Bob createBob() {

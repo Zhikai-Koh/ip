@@ -25,6 +25,7 @@ public class Bob {
      * @param filePath path of the file used to store tasks
      */
     public Bob(String filePath) {
+        assert filePath != null && !filePath.isBlank() : "Storage path must not be null or blank";
         ui = new Ui();
         storage = new Storage(filePath);
 
@@ -67,6 +68,7 @@ public class Bob {
      * @return response to display
      */
     public String getResponse(String command) {
+        assert command != null : "Command from the UI must not be null";
         String input = command.trim();
         try {
             if (input.equals("bye")) {
@@ -138,6 +140,7 @@ public class Bob {
      * @throws IOException if the task list cannot be saved
      */
     private String addTask(Task task) throws IOException {
+        assert task != null : "Parsed task must not be null";
         tasks.add(task);
         storage.saveTasks(tasks.getTasks());
         return ui.getTaskAddedMessage(task, tasks.size());
