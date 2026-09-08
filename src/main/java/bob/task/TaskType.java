@@ -44,4 +44,20 @@ public enum TaskType {
     public String getStorageCode() {
         return storageCode;
     }
+
+    /**
+     * Finds the task type represented by a storage code.
+     *
+     * @param storageCode code read from the storage file
+     * @return matching task type
+     * @throws IllegalArgumentException if the code does not represent a task type
+     */
+    public static TaskType fromStorageCode(String storageCode) {
+        for (TaskType taskType : values()) {
+            if (taskType.storageCode.equals(storageCode)) {
+                return taskType;
+            }
+        }
+        throw new IllegalArgumentException("Unknown task type code: " + storageCode);
+    }
 }
