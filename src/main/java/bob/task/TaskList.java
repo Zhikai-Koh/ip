@@ -81,13 +81,9 @@ public class TaskList {
      * @return matching tasks in their original list order
      */
     public List<Task> find(String keyword) {
-        ArrayList<Task> matches = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.getDescription().contains(keyword)) {
-                matches.add(task);
-            }
-        }
-        return Collections.unmodifiableList(matches);
+        return tasks.stream()
+                .filter(task -> task.getDescription().contains(keyword))
+                .toList();
     }
 
     /**

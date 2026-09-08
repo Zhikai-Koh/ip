@@ -176,10 +176,9 @@ public class Storage {
             Files.createDirectories(parentDirectory);
         }
 
-        List<String> taskLines = new ArrayList<>();
-        for (Task task : tasks) {
-            taskLines.add(task.toDataString());
-        }
+        List<String> taskLines = tasks.stream()
+                .map(Task::toDataString)
+                .toList();
         Files.write(filePath, taskLines, StandardCharsets.UTF_8);
     }
 }
