@@ -41,4 +41,20 @@ public enum TaskStatus {
     public String getStorageValue() {
         return storageValue;
     }
+
+    /**
+     * Finds the task status represented by a storage value.
+     *
+     * @param storageValue value read from the storage file
+     * @return matching task status
+     * @throws IllegalArgumentException if the value does not represent a task status
+     */
+    public static TaskStatus fromStorageValue(String storageValue) {
+        for (TaskStatus taskStatus : values()) {
+            if (taskStatus.storageValue.equals(storageValue)) {
+                return taskStatus;
+            }
+        }
+        throw new IllegalArgumentException("Unknown task status value: " + storageValue);
+    }
 }
