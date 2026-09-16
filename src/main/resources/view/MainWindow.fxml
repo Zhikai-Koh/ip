@@ -24,7 +24,7 @@
                 <VBox fx:id="dialogContainer"
                       fillWidth="true"
                       minHeight="0.0"
-                      spacing="4.0" />
+                      spacing="2.0" />
             </content>
         </ScrollPane>
         <TextField fx:id="userInput"

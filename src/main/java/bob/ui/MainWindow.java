@@ -56,9 +56,12 @@ public class MainWindow extends AnchorPane {
         }
 
         String response = bob.getResponse(input);
+        DialogBox bobDialog = bob.isLastResponseError()
+                ? DialogBox.getErrorDialog(response)
+                : DialogBox.getBobDialog(response);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input),
-                DialogBox.getBobDialog(response));
+                bobDialog);
         userInput.clear();
 
         if (bob.isExit()) {

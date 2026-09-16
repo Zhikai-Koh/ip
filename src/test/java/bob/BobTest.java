@@ -49,10 +49,13 @@ class BobTest {
 
         assertFalse(bob.isExit());
         assertEquals("A todo needs something to do. Add a description after todo.", bob.getResponse("todo"));
+        assertTrue(bob.isLastResponseError());
         assertEquals("I couldn't match that to a command. "
                 + "Try todo, deadline, event, list, find, schedule, mark, unmark, delete, or bye.",
                 bob.getResponse("unknown"));
+        assertTrue(bob.isLastResponseError());
         assertEquals("Bye. Hope to see you again soon!", bob.getResponse("bye"));
+        assertFalse(bob.isLastResponseError());
         assertTrue(bob.isExit());
     }
 
