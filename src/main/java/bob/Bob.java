@@ -19,6 +19,7 @@ public class Bob {
     private final Ui ui;
     private final String loadingError;
     private boolean isExit;
+    private boolean isLastResponseError;
 
     /**
      * Creates Bob and loads tasks from the given storage file.
@@ -70,11 +71,14 @@ public class Bob {
      */
     public String getResponse(String command) {
         assert command != null : "Command from the UI must not be null";
+        isLastResponseError = false;
         try {
             return executeCommand(command.trim());
         } catch (BobException e) {
+            isLastResponseError = true;
             return e.getMessage();
         } catch (IOException e) {
+            isLastResponseError = true;
             return ui.getSavingErrorMessage();
         }
     }
@@ -190,6 +194,15 @@ public class Bob {
      */
     public boolean isExit() {
         return isExit;
+    }
+
+    /**
+     * Checks whether the most recently generated response reports an error.
+     *
+     * @return true if the latest response was caused by invalid input or a saving failure
+     */
+    public boolean isLastResponseError() {
+        return isLastResponseError;
     }
 
     /**

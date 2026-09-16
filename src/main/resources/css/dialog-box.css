@@ -13,12 +13,23 @@
 
 #avatar {
     -fx-background-color: #0f172a;
-    -fx-background-radius: 26px;
-    -fx-font-size: 12px;
+    -fx-background-radius: 18px;
+    -fx-font-size: 10px;
     -fx-font-weight: bold;
     -fx-text-fill: white;
 }
 
 #avatar.bob-avatar {
     -fx-background-color: #2563eb;
+}
+
+.error-label {
+    -fx-background-color: #fff1f2;
+    -fx-border-color: #fda4af;
+    -fx-border-radius: 14px 14px 14px 3px;
+    -fx-text-fill: #9f1239;
+}
+
+#avatar.error-avatar {
+    -fx-background-color: #be123c;
 }
