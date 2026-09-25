@@ -3,7 +3,7 @@ package bob;
 import javafx.application.Application;
 
 /**
- * Launches Bob through a regular Java entry point so the packaged JAR starts reliably.
+ * Launches Orbit through a regular Java entry point so the packaged JAR starts reliably.
  */
 public final class Launcher {
     private Launcher() {

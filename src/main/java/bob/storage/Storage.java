@@ -18,7 +18,7 @@ import bob.task.TaskType;
 import bob.task.Todo;
 
 /**
- * Saves Bob's task list to a file on the hard disk.
+ * Saves Orbit's task list to a file on the hard disk.
  */
 public class Storage {
     private static final String FIELD_SEPARATOR_PATTERN = " \\| ";
@@ -75,7 +75,7 @@ public class Storage {
     private Task parseTask(String taskLine) throws BobException {
         String[] fields = taskLine.split(FIELD_SEPARATOR_PATTERN, -1);
         if (fields.length < MINIMUM_FIELD_COUNT) {
-            throw new BobException("I found an invalid entry in the task file: " + taskLine);
+            throw new BobException("Navigation log contains an invalid entry: " + taskLine);
         }
 
         TaskType taskType = parseTaskType(fields[TYPE_FIELD_INDEX]);
@@ -116,7 +116,7 @@ public class Storage {
                 }
             };
         } catch (DateTimeParseException e) {
-            throw new BobException("I found an invalid date and time in the task file: " + taskLine);
+            throw new BobException("Navigation log contains an invalid date: " + taskLine);
         }
     }
 
@@ -131,7 +131,7 @@ public class Storage {
         try {
             return TaskType.fromStorageCode(storageCode);
         } catch (IllegalArgumentException e) {
-            throw new BobException("I found an unknown task type in the task file: " + storageCode);
+            throw new BobException("Navigation log contains an unknown mission type: " + storageCode);
         }
     }
 
@@ -146,7 +146,7 @@ public class Storage {
         try {
             return TaskStatus.fromStorageValue(storageValue);
         } catch (IllegalArgumentException e) {
-            throw new BobException("I found an invalid task status in the task file: " + storageValue);
+            throw new BobException("Navigation log contains an invalid mission status: " + storageValue);
         }
     }
 
@@ -160,7 +160,7 @@ public class Storage {
      */
     private void requireFieldCount(String[] fields, int expectedCount, String taskLine) throws BobException {
         if (fields.length != expectedCount) {
-            throw new BobException("I found an invalid entry in the task file: " + taskLine);
+            throw new BobException("Navigation log contains an invalid entry: " + taskLine);
         }
     }
 

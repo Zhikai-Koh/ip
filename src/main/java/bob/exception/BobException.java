@@ -1,7 +1,7 @@
 package bob.exception;
 
 /**
- * Represents an error caused by a command that Bob cannot process.
+ * Represents an error caused by a command that Orbit cannot process.
  */
 public class BobException extends Exception {
     /**

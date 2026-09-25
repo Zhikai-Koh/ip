@@ -39,21 +39,21 @@ public final class Parser {
     public static int parseTaskNumber(String input, String command, int taskCount) throws BobException {
         String numberText = input.substring(command.length()).trim();
         if (numberText.isEmpty()) {
-            throw new BobException("Tell me which task to update, for example: " + command + " 2.");
+            throw new BobException("Mission control needs a task number, for example: " + command + " 2.");
         }
 
         int taskNumber;
         try {
             taskNumber = Integer.parseInt(numberText);
         } catch (NumberFormatException e) {
-            throw new BobException("Task numbers must be whole numbers, such as 1 or 2.");
+            throw new BobException("Mission coordinates must be whole numbers, such as 1 or 2.");
         }
 
         if (taskCount == 0) {
-            throw new BobException("Your task list is empty, so there is nothing to " + command + ".");
+            throw new BobException("Your flight plan is empty, so there is nothing to " + command + ".");
         }
         if (taskNumber < 1 || taskNumber > taskCount) {
-            throw new BobException("I couldn't find that task. Choose a number between 1 and "
+            throw new BobException("That mission is outside the flight plan. Choose a number between 1 and "
                     + taskCount + ".");
         }
         return taskNumber;
@@ -69,7 +69,7 @@ public final class Parser {
     public static String parseFindKeyword(String input) throws BobException {
         String keyword = input.substring("find".length()).trim();
         if (keyword.isEmpty()) {
-            throw new BobException("Tell me what to search for, for example: find book.");
+            throw new BobException("Give the scanner a search signal, for example: find book.");
         }
         return keyword;
     }
@@ -84,7 +84,7 @@ public final class Parser {
     public static LocalDate parseScheduleDate(String input) throws BobException {
         String dateText = input.substring("schedule".length()).trim();
         if (dateText.isEmpty()) {
-            throw new BobException("Tell me which date to show, for example: schedule 2019-12-02.");
+            throw new BobException("Set a mission date, for example: schedule 2019-12-02.");
         }
         return parseDate(dateText);
     }
@@ -99,7 +99,7 @@ public final class Parser {
     public static Task parseTodo(String input) throws BobException {
         String description = input.substring("todo".length()).trim();
         if (description.isEmpty()) {
-            throw new BobException("A todo needs something to do. Add a description after todo.");
+            throw new BobException("Every mission needs an objective. Add a description after todo.");
         }
         return new Todo(description);
     }
@@ -115,17 +115,17 @@ public final class Parser {
         String details = input.substring("deadline".length()).trim();
         int byPosition = details.indexOf("/by");
         if (byPosition < 0) {
-            throw new BobException("This deadline is missing its due date. Add it using /by, "
-                    + "for example: deadline return book /by Sunday.");
+            throw new BobException("This deadline is missing its target date. Add it using /by, "
+                    + "for example: deadline return book /by 2019-12-02.");
         }
 
         String description = details.substring(0, byPosition).trim();
         String byText = details.substring(byPosition + "/by".length()).trim();
         if (description.isEmpty()) {
-            throw new BobException("Tell me what the deadline is for before adding /by.");
+            throw new BobException("Add a mission objective before /by.");
         }
         if (byText.isEmpty()) {
-            throw new BobException("The /by field cannot be empty. Tell me when this task is due.");
+            throw new BobException("The /by field is empty. Set the mission's target date.");
         }
         return new Deadline(description, parseDate(byText));
     }
@@ -141,26 +141,26 @@ public final class Parser {
         String details = input.substring("event".length()).trim();
         int fromPosition = details.indexOf("/from");
         if (fromPosition < 0) {
-            throw new BobException("This event needs a starting time. Add one using /from.");
+            throw new BobException("This event needs a launch date. Add one using /from.");
         }
 
         String description = details.substring(0, fromPosition).trim();
         String schedule = details.substring(fromPosition + "/from".length()).trim();
         int toPosition = schedule.indexOf("/to");
         if (description.isEmpty()) {
-            throw new BobException("Tell me what the event is before adding its time.");
+            throw new BobException("Add a mission objective before its dates.");
         }
         if (toPosition < 0) {
-            throw new BobException("This event needs an ending time. Add one using /to.");
+            throw new BobException("This event needs a return date. Add one using /to.");
         }
 
         String fromText = schedule.substring(0, toPosition).trim();
         String toText = schedule.substring(toPosition + "/to".length()).trim();
         if (fromText.isEmpty()) {
-            throw new BobException("The /from field cannot be empty. Tell me when the event starts.");
+            throw new BobException("The /from field is empty. Set the mission's launch date.");
         }
         if (toText.isEmpty()) {
-            throw new BobException("The /to field cannot be empty. Tell me when the event ends.");
+            throw new BobException("The /to field is empty. Set the mission's return date.");
         }
         return new Event(description, parseDate(fromText), parseDate(toText));
     }
@@ -176,7 +176,7 @@ public final class Parser {
         try {
             return LocalDate.parse(dateText);
         } catch (DateTimeParseException e) {
-            throw new BobException("I couldn't understand that date. Use yyyy-MM-dd, "
+            throw new BobException("That date is outside my navigation charts. Use yyyy-MM-dd, "
                     + "for example: 2019-12-02.");
         }
     }

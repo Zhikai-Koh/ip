@@ -67,7 +67,7 @@ jar {
 }
 
 shadowJar {
-    archiveFileName = 'bob.jar'
+    archiveFileName = 'orbit.jar'
 }
 
 run {

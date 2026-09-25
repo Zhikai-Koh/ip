@@ -11,7 +11,7 @@ import bob.task.TaskList;
 import bob.ui.Ui;
 
 /**
- * Starts the Bob chatbot application.
+ * Runs the command logic behind the Orbit chatbot application.
  */
 public class Bob {
     private final Storage storage;
@@ -22,7 +22,7 @@ public class Bob {
     private boolean isLastResponseError;
 
     /**
-     * Creates Bob and loads tasks from the given storage file.
+     * Creates Orbit and loads tasks from the given storage file.
      *
      * @param filePath path of the file used to store tasks
      */
@@ -44,7 +44,7 @@ public class Bob {
     }
 
     /**
-     * Runs Bob's command loop until the user enters {@code bye}.
+     * Runs Orbit's command loop until the user enters {@code bye}.
      */
     public void run() {
         ui.showWelcome();
@@ -125,7 +125,7 @@ public class Bob {
         if (Parser.isCommand(input, "event")) {
             return addTask(Parser.parseEvent(input));
         }
-        throw new BobException("I couldn't match that to a command. "
+        throw new BobException("Command not recognized by mission control. "
                 + "Try todo, deadline, event, list, find, schedule, mark, unmark, delete, or bye.");
     }
 
@@ -220,7 +220,7 @@ public class Bob {
     }
 
     /**
-     * Starts Bob using the default task storage path.
+     * Starts Orbit using the default task storage path.
      *
      * @param args command-line arguments, which are not used
      */

@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 /**
- * Controls Bob's main chat window.
+ * Controls Orbit's main chat window.
  */
 public class MainWindow extends AnchorPane {
     @FXML
@@ -35,18 +35,18 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
-     * Connects the view to Bob and displays his greeting.
+     * Connects the view to Orbit and displays its greeting.
      *
      * @param bob chatbot that processes commands
      */
     public void setBob(Bob bob) {
         this.bob = bob;
-        dialogContainer.getChildren().add(DialogBox.getBobDialog(bob.getWelcomeMessage()));
+        dialogContainer.getChildren().add(DialogBox.getOrbitDialog(bob.getWelcomeMessage()));
         userInput.requestFocus();
     }
 
     /**
-     * Sends the current input to Bob and displays both sides of the exchange.
+     * Sends the current input to Orbit and displays both sides of the exchange.
      */
     @FXML
     private void handleUserInput() {
@@ -58,7 +58,7 @@ public class MainWindow extends AnchorPane {
         String response = bob.getResponse(input);
         DialogBox bobDialog = bob.isLastResponseError()
                 ? DialogBox.getErrorDialog(response)
-                : DialogBox.getBobDialog(response);
+                : DialogBox.getOrbitDialog(response);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input),
                 bobDialog);
@@ -66,7 +66,7 @@ public class MainWindow extends AnchorPane {
 
         if (bob.isExit()) {
             userInput.setDisable(true);
-            userInput.setPromptText("Bob has signed off");
+            userInput.setPromptText("Orbit has signed off");
             sendButton.setDisable(true);
         }
     }

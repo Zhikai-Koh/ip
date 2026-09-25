@@ -18,16 +18,16 @@ class BobTest {
     void getResponse_taskWorkflow_returnsResponsesAndUpdatesList() {
         Bob bob = createBob();
 
-        assertEquals("Got it. I've added this task:\n"
+        assertEquals("Mission logged:\n"
                 + "  [T][ ] read book\n"
-                + "Now you have 1 tasks in the list.", bob.getResponse("todo read book"));
-        assertEquals("Here are the tasks in your list:\n1.[T][ ] read book", bob.getResponse("list"));
-        assertEquals("Nice! I've marked this task as done:\n  [T][X] read book", bob.getResponse("mark 1"));
-        assertEquals("Here are the matching tasks in your list:\n1.[T][X] read book",
+                + "Flight plan now contains 1 mission.", bob.getResponse("todo read book"));
+        assertEquals("Here is your flight plan:\n1.[T][ ] read book", bob.getResponse("list"));
+        assertEquals("Mission accomplished! Marked as complete:\n  [T][X] read book", bob.getResponse("mark 1"));
+        assertEquals("Scanner found these matching missions:\n1.[T][X] read book",
                 bob.getResponse("find book"));
-        assertEquals("Noted. I've removed this task:\n"
+        assertEquals("Mission scrubbed from the flight plan:\n"
                 + "  [T][X] read book\n"
-                + "Now you have 0 tasks in the list.", bob.getResponse("delete 1"));
+                + "Flight plan now contains 0 missions.", bob.getResponse("delete 1"));
     }
 
     @Test
@@ -37,7 +37,7 @@ class BobTest {
         bob.getResponse("deadline return book /by 2019-12-02");
         bob.getResponse("event camp /from 2019-12-01 /to 2019-12-03");
 
-        assertEquals("Here is your schedule for Dec 2 2019:\n"
+        assertEquals("Mission timeline for Dec 2 2019:\n"
                 + "1.[D][ ] return book (by: Dec 2 2019)\n"
                 + "2.[E][ ] camp (from: Dec 1 2019 to: Dec 3 2019)",
                 bob.getResponse("schedule 2019-12-02"));
@@ -47,14 +47,16 @@ class BobTest {
     void getResponse_invalidAndByeCommands_returnsErrorsAndTracksExit() {
         Bob bob = createBob();
 
+        assertEquals("Orbit online.\nMission control is ready. What shall we accomplish?",
+                bob.getWelcomeMessage());
         assertFalse(bob.isExit());
-        assertEquals("A todo needs something to do. Add a description after todo.", bob.getResponse("todo"));
+        assertEquals("Every mission needs an objective. Add a description after todo.", bob.getResponse("todo"));
         assertTrue(bob.isLastResponseError());
-        assertEquals("I couldn't match that to a command. "
+        assertEquals("Command not recognized by mission control. "
                 + "Try todo, deadline, event, list, find, schedule, mark, unmark, delete, or bye.",
                 bob.getResponse("unknown"));
         assertTrue(bob.isLastResponseError());
-        assertEquals("Bye. Hope to see you again soon!", bob.getResponse("bye"));
+        assertEquals("Orbit signing off. Clear skies!", bob.getResponse("bye"));
         assertFalse(bob.isLastResponseError());
         assertTrue(bob.isExit());
     }

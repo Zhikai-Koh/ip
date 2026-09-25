@@ -8,17 +8,17 @@ import java.util.Scanner;
 import bob.task.Task;
 
 /**
- * Handles all interactions between Bob and the user.
+ * Creates Orbit's mission-control responses and handles console interaction.
  */
 public class Ui {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy");
     private static final String SEPARATOR =
             "____________________________________________________________";
-    private static final String BANNER = " ____        _     \n"
-            + "| __ )  ___ | |__  \n"
-            + "|  _ \\ / _ \\| '_ \\ \n"
-            + "| |_) | (_) | |_) |\n"
-            + "|____/ \\___/|_.__/ \n";
+    private static final String BANNER = "  ___  ____  ____ ___ _____ \n"
+            + " / _ \\|  _ \\| __ )_ _|_   _|\n"
+            + "| | | | |_) |  _ \\| |  | |  \n"
+            + "| |_| |  _ <| |_) | |  | |  \n"
+            + " \\___/|_| \\_\\____/___| |_|  \n";
 
     private final Scanner scanner;
 
@@ -30,20 +30,20 @@ public class Ui {
     }
 
     /**
-     * Displays Bob's welcome message.
+     * Displays Orbit's welcome message.
      */
     public void showWelcome() {
         System.out.println(SEPARATOR + "\n" + BANNER
-                + "Hello! I'm Bob.\nWhat can I do for you?\n" + SEPARATOR);
+                + "Orbit online.\nMission control is ready. What shall we accomplish?\n" + SEPARATOR);
     }
 
     /**
-     * Returns Bob's greeting without console-specific decoration.
+     * Returns Orbit's greeting without console-specific decoration.
      *
      * @return greeting for a graphical UI
      */
     public String getWelcomeMessage() {
-        return formatLines("Hello! I'm Bob.", "What can I do for you?");
+        return formatLines("Orbit online.", "Mission control is ready. What shall we accomplish?");
     }
 
     /**
@@ -81,12 +81,12 @@ public class Ui {
     }
 
     /**
-     * Creates Bob's goodbye message.
+     * Creates Orbit's goodbye message.
      *
      * @return goodbye response
      */
     public String getGoodbyeMessage() {
-        return "Bye. Hope to see you again soon!";
+        return "Orbit signing off. Clear skies!";
     }
 
     /**
@@ -96,7 +96,7 @@ public class Ui {
      * @return formatted task-list response
      */
     public String getTaskListMessage(List<Task> tasks) {
-        return formatNumberedTasks("Here are the tasks in your list:", tasks);
+        return formatNumberedTasks("Here is your flight plan:", tasks);
     }
 
     /**
@@ -106,7 +106,7 @@ public class Ui {
      * @return formatted matching-task response
      */
     public String getMatchingTasksMessage(List<Task> tasks) {
-        return formatNumberedTasks("Here are the matching tasks in your list:", tasks);
+        return formatNumberedTasks("Scanner found these matching missions:", tasks);
     }
 
     /**
@@ -117,7 +117,7 @@ public class Ui {
      * @return formatted schedule response
      */
     public String getScheduleMessage(LocalDate date, List<Task> tasks) {
-        return formatNumberedTasks("Here is your schedule for " + date.format(DATE_FORMAT) + ":", tasks);
+        return formatNumberedTasks("Mission timeline for " + date.format(DATE_FORMAT) + ":", tasks);
     }
 
     /**
@@ -127,7 +127,7 @@ public class Ui {
      * @return task-marked response
      */
     public String getTaskMarkedMessage(String taskDisplay) {
-        return formatLines("Nice! I've marked this task as done:", "  " + taskDisplay);
+        return formatLines("Mission accomplished! Marked as complete:", "  " + taskDisplay);
     }
 
     /**
@@ -137,7 +137,7 @@ public class Ui {
      * @return task-unmarked response
      */
     public String getTaskUnmarkedMessage(String taskDisplay) {
-        return formatLines("OK, I've marked this task as not done yet:", "  " + taskDisplay);
+        return formatLines("Mission reopened and returned to the flight plan:", "  " + taskDisplay);
     }
 
     /**
@@ -149,9 +149,9 @@ public class Ui {
      */
     public String getTaskDeletedMessage(Task task, int taskCount) {
         return formatLines(
-                "Noted. I've removed this task:",
+                "Mission scrubbed from the flight plan:",
                 "  " + task,
-                "Now you have " + taskCount + " tasks in the list.");
+                formatTaskCount(taskCount));
     }
 
     /**
@@ -163,9 +163,9 @@ public class Ui {
      */
     public String getTaskAddedMessage(Task task, int taskCount) {
         return formatLines(
-                "Got it. I've added this task:",
+                "Mission logged:",
                 "  " + task,
-                "Now you have " + taskCount + " tasks in the list.");
+                formatTaskCount(taskCount));
     }
 
     /**
@@ -175,7 +175,7 @@ public class Ui {
      * @return loading-error response
      */
     public String getLoadingErrorMessage(String message) {
-        return "I couldn't load your saved tasks: " + message;
+        return "Navigation log could not be loaded: " + message;
     }
 
     /**
@@ -184,7 +184,7 @@ public class Ui {
      * @return saving-error response
      */
     public String getSavingErrorMessage() {
-        return "I couldn't save your tasks. Please try again.";
+        return "Mission log could not be saved. Please try again.";
     }
 
     /**
@@ -213,5 +213,16 @@ public class Ui {
      */
     private static String formatLines(String... lines) {
         return String.join("\n", lines);
+    }
+
+    /**
+     * Formats the current number of missions with correct singular or plural grammar.
+     *
+     * @param taskCount number of missions in the flight plan
+     * @return formatted mission-count message
+     */
+    private static String formatTaskCount(int taskCount) {
+        String noun = taskCount == 1 ? "mission" : "missions";
+        return "Flight plan now contains " + taskCount + " " + noun + ".";
     }
 }

@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Owns Bob's task collection and provides operations that modify it.
+ * Owns Orbit's task collection and provides operations that modify it.
  */
 public class TaskList {
     private final ArrayList<Task> tasks;

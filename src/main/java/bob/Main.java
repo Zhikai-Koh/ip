@@ -10,13 +10,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
- * Loads and displays Bob's JavaFX interface.
+ * Loads and displays Orbit's JavaFX interface.
  */
 public class Main extends Application {
     private static final String STORAGE_PATH = "./data/bob.txt";
 
     /**
-     * Creates Bob's main window and connects it to the chatbot.
+     * Creates Orbit's main window and connects it to the chatbot.
      *
      * @param stage primary stage supplied by JavaFX
      */
@@ -27,13 +27,13 @@ public class Main extends Application {
             AnchorPane mainLayout = loader.load();
             loader.<MainWindow>getController().setBob(new Bob(STORAGE_PATH));
 
-            stage.setTitle("Bob");
+            stage.setTitle("Orbit | Mission Control");
             stage.setMinHeight(500.0);
             stage.setMinWidth(440.0);
             stage.setScene(new Scene(mainLayout));
             stage.show();
         } catch (IOException e) {
-            throw new IllegalStateException("Unable to load Bob's main window.", e);
+            throw new IllegalStateException("Unable to load Orbit's main window.", e);
         }
     }
 }

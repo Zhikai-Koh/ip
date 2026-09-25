@@ -1,14 +1,16 @@
-# Bob User Guide
+# Orbit User Guide
 
-Bob is a friendly desktop chatbot that helps you keep track of todos, deadlines, and events.
+Orbit is a calm mission-control chatbot that helps keep your todos, deadlines, and events on course.
 
-![Bob's graphical interface](Ui.png)
+![Orbit's graphical interface](Ui.png)
+
+Orbit describes tasks as missions, the task list as a flight plan, and scheduled work as a mission timeline. The space-inspired interface uses deep navy, blue, and cyan to keep the conversation readable while giving mission control its own identity.
 
 ## Quick start
 
 1. Ensure that Java 25 is installed.
 2. Open a terminal in the project folder.
-3. Start Bob with:
+3. Start Orbit with:
 
    ```bash
    ./gradlew run
@@ -31,7 +33,7 @@ Dates must use the `yyyy-MM-dd` format, such as `2026-09-20`. Commands and searc
 | Delete a task | `delete NUMBER` | `delete 2` |
 | Find tasks | `find KEYWORD` | `find book` |
 | View a day's schedule | `schedule DATE` | `schedule 2026-09-18` |
-| Exit Bob | `bye` | `bye` |
+| Exit Orbit | `bye` | `bye` |
 
 ## Adding tasks
 
@@ -43,7 +45,7 @@ Use `todo` for a task without a date:
 todo read book
 ```
 
-Bob adds the task and assigns it a number. New tasks start as not done, shown by `[ ]`.
+Orbit adds the mission and assigns it a number. New tasks start as not done, shown by `[ ]`.
 
 ### Adding a deadline
 
@@ -111,17 +113,17 @@ An event appears for every date from its start date through its end date.
 
 ## Saving data
 
-Bob saves changes automatically in `data/bob.txt` and loads them the next time the app starts. You do not need to enter a save command.
+Orbit saves changes automatically and loads them the next time the app starts. You do not need to enter a save command.
 
 ## Handling mistakes
 
-If a command is incomplete or invalid, Bob explains what needs to be corrected. For example:
+If a command is incomplete or invalid, Orbit explains what needs to be corrected. For example:
 
 ```text
 deadline submit report
 ```
 
-Bob will explain that the `/by` date is missing. Your existing tasks remain unchanged.
+Orbit will explain that the `/by` date is missing. Your existing tasks remain unchanged.
 
 ## Exiting
 
@@ -131,4 +133,4 @@ Enter:
 bye
 ```
 
-Bob displays a farewell and disables further input. Close the window when you are finished.
+Orbit signs off and disables further input. Close the window when you are finished.

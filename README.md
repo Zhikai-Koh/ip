@@ -1,8 +1,8 @@
-# Bob
+# Orbit
 
-Bob is a task-management chatbot with a JavaFX graphical interface.
+Orbit is a calm mission-control chatbot that keeps tasks, deadlines, and events on course through a JavaFX interface.
 
-## Running Bob
+## Running Orbit
 
 Use JDK 25, then launch the GUI from the project root:
 
@@ -28,7 +28,7 @@ To build and run the executable JAR:
 
 ```bash
 ./gradlew shadowJar
-java -jar build/libs/bob.jar
+java -jar build/libs/orbit.jar
 ```
 
 ## Setting up in Intellij
