@@ -11,7 +11,7 @@
             stylesheets="@../css/main.css"
             xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="bob.ui.MainWindow">
+            fx:controller="orbit.ui.MainWindow">
     <children>
         <ScrollPane fx:id="scrollPane"
                     fitToWidth="true"
@@ -30,7 +30,7 @@
         <TextField fx:id="userInput"
                    onAction="#handleUserInput"
                    prefHeight="62.0"
-                   promptText="Enter a command, e.g. todo read book"
+                   promptText="Transmit a command, e.g. todo read book"
                    AnchorPane.bottomAnchor="0.0"
                    AnchorPane.leftAnchor="0.0"
                    AnchorPane.rightAnchor="92.0" />
@@ -39,7 +39,7 @@
                 onAction="#handleUserInput"
                 prefHeight="62.0"
                 prefWidth="92.0"
-                text="Send"
+                text="Transmit"
                 AnchorPane.bottomAnchor="0.0"
                 AnchorPane.rightAnchor="0.0" />
     </children>

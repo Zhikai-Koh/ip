@@ -56,7 +56,7 @@ test {
 }
 
 application {
-    mainClass = 'bob.Launcher'
+    mainClass = 'orbit.Launcher'
 }
 
 jar {
@@ -67,7 +67,7 @@ jar {
 }
 
 shadowJar {
-    archiveFileName = 'bob.jar'
+    archiveFileName = 'orbit.jar'
 }
 
 run {
