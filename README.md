@@ -10,7 +10,7 @@ Use JDK 25, then launch the GUI from the project root:
 ./gradlew run
 ```
 
-Type a command in the field at the bottom of the window and press Enter or click **Send**. For example:
+Type a command in the field at the bottom of the window and press Enter or click **Transmit**. For example:
 
 ```text
 todo read book
@@ -23,6 +23,8 @@ delete 1
 find book
 bye
 ```
+
+See the [Orbit User Guide](docs/README.md) for command formats, examples, storage details, and known limitations.
 
 To build and run the executable JAR:
 
@@ -42,6 +44,6 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    1. If there are any further prompts, accept the defaults.
 1. Configure the project to use **JDK 25** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
    In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate `src/main/java/bob/Launcher.java`, right-click it, and choose `Run Launcher.main()`.
+1. After that, locate `src/main/java/orbit/Launcher.java`, right-click it, and choose `Run Launcher.main()`.
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.

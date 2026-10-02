@@ -1,5 +1,9 @@
 .root {
     -fx-background-color: linear-gradient(to bottom, #07111f, #0b1f33);
+    -fx-background-image: url("../images/orbit-starfield.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
     -fx-font-family: "Avenir Next", "Arial";
 }
 
@@ -9,6 +13,7 @@
 }
 
 .scroll-pane {
+    -fx-background-color: rgba(3, 12, 24, 0.36);
     -fx-padding: 8px 0 8px 0;
 }
 

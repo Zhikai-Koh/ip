@@ -25,10 +25,10 @@
         </Label>
         <Label fx:id="avatar"
                alignment="CENTER"
-               minHeight="36.0"
-               minWidth="48.0"
-               prefHeight="40.0"
-               prefWidth="48.0"
+               minHeight="48.0"
+               minWidth="56.0"
+               prefHeight="52.0"
+               prefWidth="56.0"
                text="YOU" />
     </children>
     <padding>

@@ -23,8 +23,12 @@
 }
 
 #avatar.orbit-avatar {
-    -fx-background-color: #0891b2;
-    -fx-text-fill: #ecfeff;
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/orbit-avatar.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-text-fill: transparent;
 }
 
 .error-label {
@@ -35,5 +39,7 @@
 }
 
 #avatar.error-avatar {
+    -fx-background-image: none;
     -fx-background-color: #e11d48;
+    -fx-text-fill: white;
 }
